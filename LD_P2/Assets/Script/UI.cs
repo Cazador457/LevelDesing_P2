@@ -1,11 +1,13 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class UIGame : MonoBehaviour
 {
     public Player player;
     public GameObject PanelWin;
     public GameObject PanelLose;
+    public GameObject PanelGame;
 
     public TextMeshProUGUI Life;
 
@@ -27,8 +29,13 @@ public class UIGame : MonoBehaviour
         PanelWin.SetActive(false);
         PanelLose.SetActive(false);
     }
-    public void CurrentLife()
+    public void DamageUI()
     {
 
+    }
+    public void CurrentLife() => Life.text = $"{player.Life}";
+    IEnumerator Hit()
+    {
+        yield return new WaitForSeconds(1f);
     }
 }

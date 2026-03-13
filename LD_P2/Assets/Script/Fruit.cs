@@ -15,10 +15,13 @@ public class Fruit : MonoBehaviour
     }
     public void OnTriggerEnter2D(Collider2D other)
     {
-        Player player = other.GetComponent<Player>();
-        if (player==null)
+        if (other.CompareTag("Player"))
         {
-
+            Player player = other.GetComponent<Player>();
+            if (player != null)
+            {
+                player.currentFruit += fruit;
+            }
         }
         
     }
