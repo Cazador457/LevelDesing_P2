@@ -3,16 +3,8 @@ using UnityEngine;
 public class Fruit : MonoBehaviour
 {
     public int fruit = 2;
-    void Start()
-    {
-        
-    }
+    public GameObject[] Banish;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
@@ -21,6 +13,8 @@ public class Fruit : MonoBehaviour
             if (player != null)
             {
                 player.currentFruit += fruit;
+                foreach (var fruit in Banish) { fruit.SetActive(!fruit.activeSelf); }
+                this.gameObject.SetActive(false);
             }
         }
         

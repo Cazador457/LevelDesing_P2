@@ -10,7 +10,7 @@ public class Obstacle : MonoBehaviour
             Player player = GetComponent<Player>();
             if (player != null)
             {
-                player.Life--;
+                player.Life -= 1;
             }
             condition.Araise();
         }
