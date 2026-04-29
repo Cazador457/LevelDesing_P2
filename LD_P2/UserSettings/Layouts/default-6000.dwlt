@@ -1367,7 +1367,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Pixel Adventure 1
+    - Assets/Scenes
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -1377,18 +1377,18 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 96
   m_LastFolders:
-  - Assets/Pixel Adventure 1
+  - Assets/Scenes
   m_LastFoldersGridSize: 96
-  m_LastProjectPath: C:\Users\Angel\Desktop\LevelDesing_P2\LD_P2
+  m_LastProjectPath: D:\6 Semestre\LevelDesing_P2\LD_P2
   m_LockTracker:
     m_IsLocked: 0
   m_LastLocalAssetsSearchArea: 1
   m_FolderTreeState:
     scrollPos: {x: 0, y: 3.6000366}
     m_SelectedIDs:
-    - m_Data: 50048
+    - m_Data: 50152
     m_LastClickedID:
-      m_Data: 50048
+      m_Data: 50152
     m_ExpandedIDs:
     - m_Data: 0
     - m_Data: 50046
@@ -1456,7 +1456,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: []
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs:
     - m_Data: 0
     - m_Data: 78132
