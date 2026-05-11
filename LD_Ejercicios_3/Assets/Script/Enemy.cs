@@ -13,7 +13,6 @@ public class Enemy : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
-            AddValue();
             Die();
             gameObject.SetActive(false);
         }
@@ -23,8 +22,4 @@ public class Enemy : MonoBehaviour
 
     public virtual void OnEnable()=> health = 50f;
 
-    public virtual void AddValue()
-    {
-        GameManager.Instance.enemiesKilled++;
-    }
 }

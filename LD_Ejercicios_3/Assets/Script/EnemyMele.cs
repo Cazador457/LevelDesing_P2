@@ -6,6 +6,8 @@ public class EnemyMele : Enemy
 {
     [Header("Resources")]
     private PatrolForPoints _patrolMovement;
+    public Player Player;
+    public GameManager GameManager;
 
     [Header("Patrol")]
     public Transform[] patrolPoints;
@@ -16,116 +18,71 @@ public class EnemyMele : Enemy
     public Transform player;
 
     [Header("Vision Settings")]
-    public float visionRange = 10f;
-    public float visionAngle = 45f;
-    public LayerMask visionMask;
+    public float perseptionRange = 4f;
+    public float catching = 2f;
 
     private bool isChasing = false;
-    private Coroutine chaseRoutine;
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        _patrolMovement = new PatrolForPoints(agent, patrolPoints, patrolIndex,arrival);
+        _patrolMovement = new PatrolForPoints(agent, patrolPoints, patrolIndex, arrival);
     }
 
     void Update()
     {
+        if (GameManager.LightOUT==true)
+        {
+            agent.speed = GameManager.enemySpeed;
+        }
+        if (GameManager.LightOUT ==true)
+        {
+            agent.speed = 2;
+        }
+        
+        StartCoroutine(ChasingDelay());
+        CanSeePlayer();
         if (!isChasing)
         {
             _patrolMovement?.ChangeDestination();
-            CheckVision();
         }
         else
         {
-            if (!CanSeePlayer())
-            {
-                StopChasing();
-            }
-        }
-    }
-
-    void CheckVision()
-    {
-        if (player == null) return;
-
-        Vector3 direction = player.position - transform.position;
-        float distance = direction.magnitude;
-
-        if (distance <= visionRange)
-        {
-            float angle = Vector3.Angle(transform.forward, direction);
-
-            if (angle <= visionAngle)
-            {
-                RaycastHit hit;
-                if (Physics.Raycast(transform.position + Vector3.up, direction.normalized,
-                    out hit, visionRange, visionMask))
-                {
-                    if (hit.transform.CompareTag("Player"))
-                    {
-                        StartChasing();
-                    }
-                }
-            }
-        }
-    }
-    void StartChasing()
-    {
-        if (isChasing) return;
-
-        isChasing = true;
-
-        if (chaseRoutine != null)
-            StopCoroutine(chaseRoutine);
-
-        chaseRoutine = StartCoroutine(ChasePlayer());
-    }
-    IEnumerator ChasePlayer()
-    {
-        while (isChasing && player != null)
-        {
             agent.SetDestination(player.position);
-            yield return new WaitForSeconds(0.2f);
         }
     }
-    void StopChasing()
-    {
-        isChasing = false;
-
-        if (chaseRoutine != null)
-            StopCoroutine(chaseRoutine);
-
-        chaseRoutine = null;
-    }
-    bool CanSeePlayer()
+    void CanSeePlayer()
     {
         Vector3 direction = player.position - transform.position;
         float distance = direction.magnitude;
 
-        if (distance > visionRange)
-            return false;
+        if (distance > perseptionRange)
+            isChasing = false;
 
-        float angle = Vector3.Angle(transform.forward, direction);
-        if (angle > visionAngle)
-            return false;
+        if (distance < perseptionRange)
+            isChasing = true;
 
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position + Vector3.up, direction.normalized,
-            out hit, visionRange, visionMask))
+        if (distance < catching)
         {
-            return hit.transform.CompareTag("Player");
+            Player.gamePanel.SetActive(false);
+            Player.respawnPanel.SetActive(true);
         }
-
-        return false;
     }
+
+    IEnumerator ChasingDelay()
+    {
+        yield return new WaitForSeconds(1f);
+        CanSeePlayer();
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, visionRange);
+        Gizmos.DrawWireSphere(transform.position, perseptionRange);
     }
     public override void OnEnable()
     {
-        health = 350f;
+        isChasing = false;
     }
 }
+

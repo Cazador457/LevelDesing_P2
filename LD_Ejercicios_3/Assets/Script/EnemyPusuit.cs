@@ -3,21 +3,19 @@ using UnityEngine.AI;
 
 public class EnemyPusuit : Enemy
 {
-    public GameObject target;
+    public Player Player;
+    public GameObject player;
     private NavMeshAgent agent;
-    private float stopRange=1.5f;
+    public float proximity = 22f;
+    public float catching = 1.5f;
     private Transform targetT;
     private void Start()
     {
-        target = FindFirstObjectByType<Player>().gameObject;
-        //target = GameObject.FindObjectByType("XR Origin Hands (XR Rig)");
-        targetT = target.GetComponent<Transform>();
         agent = GetComponent<NavMeshAgent>();
     }
     public override void OnEnable()
     {
         LightMovPatrol.OnPursuit += Pursuit;
-        health =200f;
     }
     private void OnDisable()
     {
@@ -25,18 +23,17 @@ public class EnemyPusuit : Enemy
     }
     void Pursuit()
     {
-        float distance = Vector3.Distance(agent.nextPosition,targetT.position);
-        if (distance > stopRange)
+        float distance = Vector3.Distance(agent.nextPosition, targetT.position);
+        if (distance < proximity)
         {
             agent.SetDestination(targetT.position);
         }
-        else if (distance < stopRange)
+        if (distance < catching)
         {
-            ataak();
+            if (Player.health > 0) Player.respawnPanel.SetActive(true);
+
+            else Player.diePanel.SetActive(true);
         }
     }
-    private void ataak()
-    {
-        Debug.Log("Atacando");
-    }
 }
+

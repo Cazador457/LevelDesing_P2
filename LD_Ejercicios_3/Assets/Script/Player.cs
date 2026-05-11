@@ -5,17 +5,21 @@ using TMPro;
 public class Player : MonoBehaviour
 {
     //public UI ui;
+    public float health = 3f;
     public int maxLife = 3;
     public int currentLife;
     public Image[] lifeSprite;
 
+    public int playerRes = 0;
+
     public GameObject diePanel;
-    public GameObject pausePanel;
+    public GameObject gamePanel;
+    public GameObject respawnPanel;
     void Start()
     {
         diePanel.SetActive(false);
-        pausePanel.SetActive(false);
-        CurrentLife();
+        respawnPanel.SetActive(false);
+        gamePanel.SetActive(true);
     }
 
     void Update()
@@ -24,65 +28,40 @@ public class Player : MonoBehaviour
     }
     public void RestLife()
     {
-        currentLife--;
-        if (currentLife <= 0)
+        if (health <= 0)
         {
-            
+            GameManager.Instance.respawnPos = 0;
+
         }
-        if (currentLife >= 0)
+        if (health > 0)
         {
-            
+            health--;
         }
-        CurrentLife();
-    }
-    public void CurrentLife()
-    {
-        for (int i = 0; i < lifeSprite.Length; i++)
-        {
-            lifeSprite[i].enabled = i < currentLife;
-        }
+
     }
 
-
-
-    public float health = 3f;
-    public void TakeDamage(float damage)
-    {
-        health -= damage;
-        if(health <= 0)
-        {
-            diePanel.SetActive(true);
-        }
-    }
-    public void PauseSh()
-    {
-        pausePanel.SetActive(!pausePanel.activeSelf);
-    }
-    public int playerRes = 0;
     public void Reset()
     {
-        GameManager.Instance.enemiesKilled = 0;
-        GameManager.Instance.eSpetialKilled = 0;
         GameManager.Instance.respawnPos = playerRes;
         diePanel.SetActive(false);
-        pausePanel.SetActive(false);
+        respawnPanel.SetActive(false);
+        gamePanel.SetActive(true);
         GameManager.Instance.Res();
+        Time.timeScale = 1;
     }
     public int playerQuit = 10;
     public void Quit()
     {
-        GameManager.Instance.enemiesKilled = 0;
-        GameManager.Instance.eSpetialKilled = 0;
         GameManager.Instance.respawnPos = playerQuit;
         diePanel.SetActive(false);
-        pausePanel.SetActive(false);
         GameManager.Instance.Res();
     }
 
     public void DieSh()
     {
         diePanel.SetActive(true);
-        
+        gamePanel.SetActive(false);
+        Time.timeScale = 0;
     }
     private void OnEnable()
     {
